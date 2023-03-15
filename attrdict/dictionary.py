@@ -45,7 +45,8 @@ class AttrDict(dict, MutableAttr):
         self._setattr('_allow_invalid_attributes', allow_invalid_attributes)
 
     def __repr__(self):
-        return six.u('AttrDict({contents})').format(
+        return six.u('{name}({contents})').format(
+            name=self.__class__.__name__,
             contents=super(AttrDict, self).__repr__()
         )
 

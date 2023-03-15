@@ -88,8 +88,9 @@ class AttrDefault(MutableAttr):
         Return a string representation of the object.
         """
         return six.u(
-            "AttrDefault({default_factory}, {pass_key}, {mapping})"
+            "{name}({default_factory}, {pass_key}, {mapping})"
         ).format(
+            name=self.__class__.__name__,
             default_factory=repr(self._default_factory),
             pass_key=repr(self._pass_key),
             mapping=repr(self._mapping),

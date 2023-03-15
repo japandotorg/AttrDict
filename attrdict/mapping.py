@@ -68,7 +68,10 @@ class AttrMap(MutableAttr):
         # sequence type seems like more trouble than it is worth.
         # If people want full serialization, they can pickle, and in
         # 99% of cases, sequence_type won't change anyway
-        return six.u("AttrMap({mapping})").format(mapping=repr(self._mapping))
+        return six.u("{name}({mapping})").format(
+            name=self.__class__.__name__,
+            mapping=repr(self._mapping)
+        )
 
     def __getstate__(self):
         """

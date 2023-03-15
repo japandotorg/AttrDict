@@ -18,38 +18,36 @@ def test_init():
     assert_equals(AttrDict({}), {})
 
     # with items
-    assert_equals(AttrDict({'foo': 'bar'}), {'foo': 'bar'})
-    assert_equals(AttrDict((('foo', 'bar'),)), {'foo': 'bar'})
-    assert_equals(AttrDict(foo='bar'), {'foo': 'bar'})
+    assert_equals(AttrDict({"foo": "bar"}), {"foo": "bar"})
+    assert_equals(AttrDict((("foo", "bar"),)), {"foo": "bar"})
+    assert_equals(AttrDict(foo="bar"), {"foo": "bar"})
 
     # non-overlapping
-    assert_equals(AttrDict({}, foo='bar'), {'foo': 'bar'})
-    assert_equals(AttrDict((), foo='bar'), {'foo': 'bar'})
+    assert_equals(AttrDict({}, foo="bar"), {"foo": "bar"})
+    assert_equals(AttrDict((), foo="bar"), {"foo": "bar"})
 
     assert_equals(
-        AttrDict({'alpha': 'bravo'}, foo='bar'),
-        {'foo': 'bar', 'alpha': 'bravo'}
+        AttrDict({"alpha": "bravo"}, foo="bar"), {"foo": "bar", "alpha": "bravo"}
     )
 
     assert_equals(
-        AttrDict((('alpha', 'bravo'),), foo='bar'),
-        {'foo': 'bar', 'alpha': 'bravo'}
+        AttrDict((("alpha", "bravo"),), foo="bar"), {"foo": "bar", "alpha": "bravo"}
     )
 
     # updating
     assert_equals(
-        AttrDict({'alpha': 'bravo'}, foo='bar', alpha='beta'),
-        {'foo': 'bar', 'alpha': 'beta'}
+        AttrDict({"alpha": "bravo"}, foo="bar", alpha="beta"),
+        {"foo": "bar", "alpha": "beta"},
     )
 
     assert_equals(
-        AttrDict((('alpha', 'bravo'), ('alpha', 'beta')), foo='bar'),
-        {'foo': 'bar', 'alpha': 'beta'}
+        AttrDict((("alpha", "bravo"), ("alpha", "beta")), foo="bar"),
+        {"foo": "bar", "alpha": "beta"},
     )
 
     assert_equals(
-        AttrDict((('alpha', 'bravo'), ('alpha', 'beta')), alpha='bravo'),
-        {'alpha': 'bravo'}
+        AttrDict((("alpha", "bravo"), ("alpha", "beta")), alpha="bravo"),
+        {"alpha": "bravo"},
     )
 
 
@@ -59,11 +57,11 @@ def test_copy():
     """
     from attrdict.dictionary import AttrDict
 
-    mapping_a = AttrDict({'foo': {'bar': 'baz'}})
+    mapping_a = AttrDict({"foo": {"bar": "baz"}})
     mapping_b = mapping_a.copy()
     mapping_c = mapping_b
 
-    mapping_b['foo']['lorem'] = 'ipsum'
+    mapping_b["foo"]["lorem"] = "ipsum"
 
     assert_equals(mapping_a, mapping_b)
     assert_equals(mapping_b, mapping_c)
@@ -78,24 +76,16 @@ def test_fromkeys():
     # default value
     assert_equals(AttrDict.fromkeys(()), {})
     assert_equals(
-        AttrDict.fromkeys({'foo': 'bar', 'baz': 'qux'}),
-        {'foo': None, 'baz': None}
+        AttrDict.fromkeys({"foo": "bar", "baz": "qux"}), {"foo": None, "baz": None}
     )
-    assert_equals(
-        AttrDict.fromkeys(('foo', 'baz')),
-        {'foo': None, 'baz': None}
-    )
+    assert_equals(AttrDict.fromkeys(("foo", "baz")), {"foo": None, "baz": None})
 
     # custom value
     assert_equals(AttrDict.fromkeys((), 0), {})
     assert_equals(
-        AttrDict.fromkeys({'foo': 'bar', 'baz': 'qux'}, 0),
-        {'foo': 0, 'baz': 0}
+        AttrDict.fromkeys({"foo": "bar", "baz": "qux"}, 0), {"foo": 0, "baz": 0}
     )
-    assert_equals(
-        AttrDict.fromkeys(('foo', 'baz'), 0),
-        {'foo': 0, 'baz': 0}
-    )
+    assert_equals(AttrDict.fromkeys(("foo", "baz"), 0), {"foo": 0, "baz": 0})
 
 
 def test_repr():
@@ -105,21 +95,50 @@ def test_repr():
     from attrdict.dictionary import AttrDict
 
     assert_equals(repr(AttrDict()), "AttrDict({})")
-    assert_equals(repr(AttrDict({'foo': 'bar'})), "AttrDict({'foo': 'bar'})")
+    assert_equals(repr(AttrDict({"foo": "bar"})), "AttrDict({'foo': 'bar'})")
+    assert_equals(repr(AttrDict({1: {"foo": "bar"}})), "AttrDict({1: {'foo': 'bar'}})")
     assert_equals(
-        repr(AttrDict({1: {'foo': 'bar'}})), "AttrDict({1: {'foo': 'bar'}})"
+        repr(AttrDict({1: AttrDict({"foo": "bar"})})),
+        "AttrDict({1: AttrDict({'foo': 'bar'})})",
+    )
+
+    assert_equals(repr(AttrDict()), "AttrDict({})")
+
+    assert_equals(repr(AttrDict({"foo": "bar"})), "AttrDict({'foo': 'bar'})")
+    assert_equals(repr(AttrDict({1: {"foo": "bar"}})), "AttrDict({1: {'foo': 'bar'}})")
+    assert_equals(
+        repr(AttrDict({1: AttrDict({"foo": "bar"})})),
+        "AttrDict({1: AttrDict({'foo': 'bar'})})",
+    )
+
+
+def test_repr_subclass():
+    """
+    repr(AttrDict)
+    """
+
+    from attrdict.dictionary import AttrDict
+
+    class MySubClass(AttrDict):
+        pass
+
+    assert_equals(repr(MySubClass()), "MySubClass({})")
+    assert_equals(repr(MySubClass({"foo": "bar"})), "MySubClass({'foo': 'bar'})")
+    assert_equals(
+        repr(MySubClass({1: {"foo": "bar"}})), "MySubClass({1: {'foo': 'bar'}})"
     )
     assert_equals(
-        repr(AttrDict({1: AttrDict({'foo': 'bar'})})),
-        "AttrDict({1: AttrDict({'foo': 'bar'})})"
+        repr(MySubClass({1: MySubClass({"foo": "bar"})})),
+        "MySubClass({1: MySubClass({'foo': 'bar'})})",
     )
 
 
 if not PY2:
+
     def test_has_key():
         """
         The now-depricated has_keys method
         """
         from attrdict.dictionary import AttrDict
 
-        assert_false(hasattr(AttrDict(), 'has_key'))
+        assert_false(hasattr(AttrDict(), "has_key"))
