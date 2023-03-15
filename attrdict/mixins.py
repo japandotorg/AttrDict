@@ -2,7 +2,8 @@
 Mixin Classes for Attr-support.
 """
 from abc import ABCMeta, abstractmethod
-from collections import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
+from typing import Any, Union, Sequence, Optional, List
 import re
 
 import six
@@ -10,7 +11,7 @@ import six
 from attrdict.merge import merge
 
 
-__all__ = ['Attr', 'MutableAttr']
+__all__: List[str] = ['Attr', 'MutableAttr']
 
 
 @six.add_metaclass(ABCMeta)
@@ -36,14 +37,14 @@ class Attr(Mapping):
         item.
     """
     @abstractmethod
-    def _configuration(self):
+    def _configuration(self) -> None:
         """
         All required state for building a new instance with the same
         settings as the current object.
         """
 
     @classmethod
-    def _constructor(cls, mapping, configuration):
+    def _constructor(cls, mapping: Union[Any, Mapping], configuration: Any) -> Any:
         """
         A standardized constructor used internally by Attr.
 
@@ -54,7 +55,7 @@ class Attr(Mapping):
         """
         raise NotImplementedError("You need to implement this")
 
-    def __call__(self, key):
+    def __call__(self, key: Any) -> Union[Any, Sequence[Any]]:
         """
         Dynamically access a key-value pair.
 
@@ -72,7 +73,7 @@ class Attr(Mapping):
 
         return self._build(self[key])
 
-    def __getattr__(self, key):
+    def __getattr__(self, key: Any) -> Union[Any, Sequence[Any]]:
         """
         Access an item as an attribute.
         """
@@ -85,7 +86,7 @@ class Attr(Mapping):
 
         return self._build(self[key])
 
-    def __add__(self, other):
+    def __add__(self, other: Any) -> Any:
         """
         Add a mapping to this Attr, creating a new, merged Attr.
 
@@ -98,7 +99,7 @@ class Attr(Mapping):
 
         return self._constructor(merge(self, other), self._configuration())
 
-    def __radd__(self, other):
+    def __radd__(self, other: Any) -> Any:
         """
         Add this Attr to a mapping, creating a new, merged Attr.
 
@@ -111,7 +112,7 @@ class Attr(Mapping):
 
         return self._constructor(merge(other, self), self._configuration())
 
-    def _build(self, obj):
+    def _build(self, obj: Union[Any, Mapping[Any, Any], Sequence[Any]]) -> Union[Any, Mapping[Any, Any], Sequence[Any]]:
         """
         Conditionally convert an object to allow for recursive mapping
         access.
@@ -135,7 +136,7 @@ class Attr(Mapping):
         return obj
 
     @classmethod
-    def _valid_name(cls, key):
+    def _valid_name(cls, key: Any) -> Optional[bool]:
         """
         Check whether a key is a valid attribute name.
 
@@ -159,14 +160,14 @@ class MutableAttr(Attr, MutableMapping):
     A mixin class for a mapping that allows for attribute-style access
     of values.
     """
-    def _setattr(self, key, value):
+    def _setattr(self, key: Any, value: Any) -> None:
         """
         Add an attribute to the object, without attempting to add it as
         a key to the mapping.
         """
         super(MutableAttr, self).__setattr__(key, value)
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: Any, value: Any) -> None:
         """
         Add an attribute.
 
@@ -184,14 +185,14 @@ class MutableAttr(Attr, MutableMapping):
                 )
             )
 
-    def _delattr(self, key):
+    def _delattr(self, key: Any) -> None:
         """
         Delete an attribute from the object, without attempting to
         remove it from the mapping.
         """
         super(MutableAttr, self).__delattr__(key)
 
-    def __delattr__(self, key, force=False):
+    def __delattr__(self, key: Any, force: bool = False) -> None:
         """
         Delete an attribute.
 

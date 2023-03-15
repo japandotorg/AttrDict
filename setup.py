@@ -16,26 +16,29 @@ except:
 
 setup(
     name="attrdict",
-    version="2.0.1",
-    author="Brendan Curran-Johnson",
-    author_email="brendan@bcjbcj.ca",
-    packages=("attrdict",),
-    url="https://github.com/bcj/AttrDict",
+    version="3.0.0",
+    author="Lemon Rose",
+    author_email="japandotorg@pm.me",
+    packages=["attrdict",],
+    url="https://github.com/japandotorg/AttrDict",
     license="MIT License",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    classifiers=(
-        "Development Status :: 7 - Inactive",
+    classifiers=[
+        "Development Status :: 7 - Active",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
-    ),
+        "Programming Language :: Python :: Implementation :: PyPy3",
+    ],
     install_requires=(
         'six',
+        'typing_extensions'
     ),
     tests_require=(
         'nose>=1.0',

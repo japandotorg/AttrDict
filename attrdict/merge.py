@@ -1,13 +1,15 @@
 """
 A right-favoring Mapping merge.
 """
-from collections import Mapping
+
+from collections.abc import Mapping
+from typing import Any, Dict, List
 
 
-__all__ = ['merge']
+__all__: List[str] = ['merge']
 
 
-def merge(left, right):
+def merge(left: Any, right: Any) -> Dict[Any, Any]:
     """
     Merge two mappings objects together, combining overlapping Mappings,
     and favoring right-values

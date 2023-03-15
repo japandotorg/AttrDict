@@ -2,3 +2,4 @@ coverage
 flake8
 nose
 python-coveralls
+typing_extensions
