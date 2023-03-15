@@ -38,6 +38,7 @@ setup(
     ],
     install_requires=(
         'six',
+        'typing_extensions'
     ),
     tests_require=(
         'nose>=1.0',
