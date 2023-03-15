@@ -16,7 +16,7 @@ except:
 
 setup(
     name="attrdict",
-    version="2.0.1",
+    version="3.0.0",
     author="Lemon Rose",
     author_email="japandotorg@pm.me",
     packages=["attrdict",],
