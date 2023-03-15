@@ -17,10 +17,10 @@ except:
 setup(
     name="attrdict",
     version="2.0.1",
-    author="Brendan Curran-Johnson",
-    author_email="brendan@bcjbcj.ca",
+    author="Lemon Rose",
+    author_email="japandotorg@pm.me",
     packages=["attrdict",],
-    url="https://github.com/bcj/AttrDict",
+    url="https://github.com/japandotorg/AttrDict",
     license="MIT License",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
